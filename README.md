@@ -2,140 +2,120 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Nebryx Calculator</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Age Calculator</title>
 
 <style>
-/* remove github pages header */
-header, .site-header, .page-header {
-    display: none !important;
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f3f5;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  padding-top: 40px;
 }
 
-/* full screen */
-html, body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    background: #020c15;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
+.container {
+  width: 100%;
+  max-width: 450px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #aaa;
+  padding: 20px;
 }
 
-.calculator {
-    width: 100%;
-    max-width: 420px;
-    height: 100vh;
-    background: linear-gradient(145deg,#0b1e2d,#03101a);
-    border-radius: 20px;
-    box-shadow: 0 0 30px #00c6ff;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    box-sizing: border-box;
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-/* screen */
-.screen {
-    background: black;
-    color: #00c6ff;
-    height: 80px;
-    border-radius: 12px;
-    padding: 15px;
-    font-size: 2rem;
-    text-align: right;
-    overflow-x: auto;
-}
-
-/* buttons */
-.buttons {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 12px;
-    margin-top: 20px;
-    flex-grow: 1;
+input {
+  width: 30%;
+  padding: 8px;
+  font-size: 16px;
+  margin: 0 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
 button {
-    background: #071a2b;
-    color: #00c6ff;
-    border: none;
-    border-radius: 12px;
-    font-size: 1.4rem;
-    box-shadow: 0 0 10px #00c6ff40;
-    cursor: pointer;
+  width: 100%;
+  background: #0078ff;
+  color: white;
+  padding: 12px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 15px;
 }
 
-button:active {
-    transform: scale(0.95);
-    box-shadow: 0 0 20px #00c6ff;
+button:hover {
+  background: #005adb;
 }
 
-.equal {
-    grid-column: span 2;
-    background: #00c6ff;
-    color: black;
-    font-weight: bold;
+.result {
+  margin-top: 20px;
+  font-size: 18px;
 }
 </style>
-</head>
 
+</head>
 <body>
 
-<div class="calculator">
-    <div id="display" class="screen">0</div>
+<div class="container">
+  <h1>Age Calculator</h1>
 
-    <div class="buttons">
-        <button onclick="clearDisplay()">C</button>
-        <button onclick="del()">⌫</button>
-        <button onclick="add('/')">÷</button>
-        <button onclick="add('*')">×</button>
+  <div>
+    <input type="number" id="day" placeholder="DD">
+    <input type="number" id="month" placeholder="MM">
+    <input type="number" id="year" placeholder="YYYY">
+  </div>
 
-        <button onclick="add('7')">7</button>
-        <button onclick="add('8')">8</button>
-        <button onclick="add('9')">9</button>
-        <button onclick="add('-')">−</button>
+  <button onclick="calculateAge()">Calculate</button>
 
-        <button onclick="add('4')">4</button>
-        <button onclick="add('5')">5</button>
-        <button onclick="add('6')">6</button>
-        <button onclick="add('+')">+</button>
-
-        <button onclick="add('1')">1</button>
-        <button onclick="add('2')">2</button>
-        <button onclick="add('3')">3</button>
-        <button onclick="calc()" class="equal">=</button>
-
-        <button onclick="add('0')" style="grid-column: span 2;">0</button>
-        <button onclick="add('.')">.</button>
-    </div>
+  <div class="result" id="result"></div>
 </div>
 
 <script>
-let display = document.getElementById("display");
+function calculateAge(){
+  let d = parseInt(document.getElementById("day").value);
+  let m = parseInt(document.getElementById("month").value);
+  let y = parseInt(document.getElementById("year").value);
 
-function add(val){
-    if(display.innerText === "0") display.innerText = "";
-    display.innerText += val;
-}
+  if(!d || !m || !y){
+    document.getElementById("result").innerText = "Please enter valid date!";
+    return;
+  }
 
-function clearDisplay(){
-    display.innerText = "0";
-}
+  let today = new Date();
+  let birth = new Date(y, m - 1, d);
 
-function del(){
-    display.innerText = display.innerText.slice(0,-1);
-    if(display.innerText === "") display.innerText = "0";
-}
+  if(birth > today){
+    document.getElementById("result").innerText = "Birth date must be before today!";
+    return;
+  }
 
-function calc(){
-    try{
-        display.innerText = eval(display.innerText);
-    }catch{
-        display.innerText = "Error";
-    }
+  let ageYears = today.getFullYear() - birth.getFullYear();
+  let ageMonths = today.getMonth() - birth.getMonth();
+  let ageDays = today.getDate() - birth.getDate();
+
+  if(ageDays < 0){
+    ageMonths--;
+    ageDays += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+  }
+  if(ageMonths < 0){
+    ageYears--;
+    ageMonths += 12;
+  }
+
+  document.getElementById("result").innerHTML =
+    "Age: <b>" + ageYears + "</b> Years " +
+    "<b>" + ageMonths + "</b> Months " +
+    "<b>" + ageDays + "</b> Days";
 }
 </script>
 
