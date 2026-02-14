@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <div style="display:none"></div>
 <title>Nebryx Calculator</title>
 
 <style>
