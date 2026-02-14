@@ -3,6 +3,33 @@
 <head>
   <style>
 html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #020c15;
+  overflow: hidden;
+}
+
+.calculator, .container, .app {
+  width: 100%;
+  max-width: 420px;
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 12px;
+}
+
+button {
+  min-width: 48px;
+  min-height: 48px;
+  font-size: 1.1rem;
+}
+</style>
+  <style>
+html, body {
     width: 100%;
     height: 100%;
     margin: 0;
